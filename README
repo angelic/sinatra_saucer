@@ -1,0 +1,7 @@
+Sinatra Saucer
+==============
+JRuby web application frontend for Flying Saucer. 
+
+It converts xhtml into a pdf. It requires a zip file containing the file pdf.html, along with any css and images referenced in the xhtml file. There is a rudimentary form to submit a zip file, but it is expected the file will be sent by another application. This is to allow for the power of PDF creation with Flying Saucer without requiring your whole application to run in JRuby.
+
+Gems required: flyingsaucer (0.5+), jruby (1.3+), rubyzip, and sinatra

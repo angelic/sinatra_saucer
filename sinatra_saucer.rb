@@ -26,7 +26,6 @@ helpers do
 
   def create_pdf_from_zip
     @dir = tmp_dir
-    puts @dir
     @zip = File.join(@dir, 'data.zip')
     save_file
     unzip_file

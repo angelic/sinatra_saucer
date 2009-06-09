@@ -23,6 +23,7 @@ end
 
 helpers do
   @@i = 0
+  TEMP = File.expand_path(File.join(File.dirname(__FILE__), 'tmp'))
 
   def create_pdf_from_zip
     @dir = tmp_dir
@@ -34,8 +35,7 @@ helpers do
 
   def tmp_dir
     @@i += 1
-    dir = "#{Time.now.to_i}#{@@i}"
-    File.expand_path(File.join(File.dirname(__FILE__), 'tmp', dir))
+    File.join(TEMP, "#{Time.now.to_i}#{@@i}")
   end
 
   def save_file

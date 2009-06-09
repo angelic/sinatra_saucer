@@ -35,7 +35,7 @@ helpers do
   def tmp_dir
     @@i += 1
     dir = "#{Time.now.to_i}#{@@i}"
-    File.join(File.dirname(__FILE__), 'tmp', dir)
+    File.expand_path(File.join(File.dirname(__FILE__), 'tmp', dir))
   end
 
   def save_file

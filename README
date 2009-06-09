@@ -8,3 +8,8 @@ So far the upload form works for creating a PDF. Coming soon will be documentati
 
 Gems required: flyingsaucer (0.5+), jruby (1.3+), rubyzip, and sinatra
 Flying saucer must currently be built locally until a rubyforge gem is set up. This can be obtained from http://github.com/pbrant/flyingsaucer-gem
+
+To get started, type this in the command line:
+jruby -S rackup config.ru
+
+The default port for rack is 9292.

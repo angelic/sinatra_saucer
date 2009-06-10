@@ -1,4 +1,4 @@
-require 'flyingsaucer'
+require 'flyingsaucer4r'
 require 'java'
 
 class PDF

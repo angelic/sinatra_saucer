@@ -15,6 +15,8 @@ post '/' do
     content_type 'application/pdf'
     @pdf
   rescue Exception => e
+    puts e.message
+    puts e.backtrace
     error(500, 'There was an error')
   ensure
     delete_files rescue nil
@@ -41,14 +43,19 @@ helpers do
   def save_file
     File.makedirs(@dir)
     File.open(@zip, "w") do |f|
-      f.write(params[:data][:tempfile].read)
+      data = params[:raw_data] || params[:data][:tempfile].read
+      f.write(data)
     end
   end
 
   def unzip_file
     Zip::ZipInputStream::open(@zip) do |io|
       while(entry = io.get_next_entry) do
-        File.open(File.join(@dir, entry.name), "w") do |f|
+        next if entry.directory?
+        file = File.join(@dir, entry.name)
+        next if (File.exist?(file) && File.directory?(file)) || file =~ /\/$/
+        FileUtils.mkdir_p(File.dirname(file))
+        File.open(file, "w") do |f|
           f.write(io.read)
         end
       end

@@ -12,3 +12,5 @@ To get started, type this in the command line:
 jruby -S rackup config.ru
 
 The default port for rack is 9292.
+
+See sinatra_saucer_client.rb for an example of a client that can use Sinatra Saucer. In Rails, use render_to_string to get the xhtml to pass to the client.

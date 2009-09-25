@@ -24,13 +24,7 @@ class PDF
       output = java.io.ByteArrayOutputStream.new(estimated_pdf_length)
  
       begin
-        renderer = org.xhtmlrenderer.pdf.ITextRenderer.new
-        agent = UserAgent.new(renderer.output_device)
-        agent.shared_context = renderer.shared_context
-        renderer.shared_context.user_agent_callback = agent
-        renderer.set_document(dom, path_to_url(path))
-        renderer.layout
- 
+        renderer = build_renderer(dom, path)
         renderer.create_pdf(output)
       ensure
         output.close
@@ -47,6 +41,16 @@ class PDF
  
     def path_to_url(path)
       java.io.File.new(path).to_uri.to_url.to_string
+    end
+
+    def build_renderer(dom, path)
+      renderer = org.xhtmlrenderer.pdf.ITextRenderer.new
+      agent = UserAgent.new(renderer.output_device)
+      agent.shared_context = renderer.shared_context
+      renderer.shared_context.user_agent_callback = agent
+      renderer.set_document(dom, path_to_url(path))
+      renderer.layout
+      renderer
     end
   end
 end

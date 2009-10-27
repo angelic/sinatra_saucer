@@ -12,20 +12,21 @@ module SinatraSaucerClient
     tempfile = tmp_file
     pdf = nil
     begin
-      url = URI.parse(SINATRA_SAUCER_URL)
-      create_zip(tempfile, xhtml)
-      data = File.open(tempfile, "rb") {|f| f.read}
-      post_params = {:raw_data => data}
-      @res = Net::HTTP.post_form(url, post_params)
-      pdf = @res.body
-      unless @cache.blank?
-        @cache.pdf = pdf
-        @cache.save
-      end
+      pdf = request_pdf(tempfile)
     ensure
       File.delete(tempfile) rescue nil
     end
     pdf
+  end
+
+  protected
+  def request_pdf(tempfile)
+    url = URI.parse(SINATRA_SAUCER_URL)
+    create_zip(tempfile, xhtml)
+    data = File.open(tempfile, "rb") {|f| f.read}
+    post_params = {:raw_data => data}
+    response = Net::HTTP.post_form(url, post_params)
+    response.body
   end
 
   def create_zip(tempfile, html)

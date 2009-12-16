@@ -63,9 +63,40 @@ helpers do
   end
 
   def create_pdf
-    pdf = File.join(@dir, 'pdf.html')
-    File.open(pdf, "r") do |f|
-      @pdf = PDF.generate(f.read, @dir)
+    @pdf = if File.exist?(File.join(@dir, 'MANIFEST'))
+      create_pdf_from_multiple_files    
+    else
+      create_pdf_from_single_file('pdf.html')
+    end
+  end
+
+  def create_pdf_from_single_file(file_name)
+    pdf = File.join(@dir, file_name)
+    PDF.generate(File.read(pdf), @dir)
+  end
+
+  def create_pdf_from_multiple_files
+    pdf_files = []
+    manifest_file = File.join(@dir, 'MANIFEST')
+    files = File.read(manifest_file).split("\n")
+    process_files_from_manifest(files, pdf_files)
+    output_file = File.join(@dir, "concatenated_sinatra_pdf.pdf")
+    PDF.concatenate(pdf_files, output_file)
+    File.read(output_file)
+  end
+
+  def process_files_from_manifest(files, pdf_files)
+    files.each do |file_name|
+      if file_name =~ /pdf$/
+        pdf_files << File.join(@dir, file_name)
+      else
+        temp_pdf = File.join(@dir, "temp_sinatra_pdf_#{pdf_files.size}")
+        pdf_files << temp_pdf
+        File.open(temp_pdf, "w") do |f|
+          pdf = create_pdf_from_single_file(file_name)
+          f.write(pdf)
+        end
+      end
     end
   end
 

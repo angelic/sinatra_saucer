@@ -2,9 +2,13 @@ Sinatra Saucer
 ==============
 JRuby web application frontend for Flying Saucer. 
 
-It converts xhtml into a pdf. It requires a zip file containing the file pdf.html, along with any css and images referenced in the xhtml file. There is a rudimentary form to submit a zip file, but it is expected the file will be sent by another application. This is to allow for the power of PDF creation with Flying Saucer without requiring your whole application to run in JRuby.
+It does two things:
+* It converts xhtml into a pdf. It requires a zip file containing the file pdf.html, along with any css and images referenced in the xhtml file. 
+* It concatenates multiple xhtml (which will be converted) and pdf files into one. Instead of a pdf.html file, it requires a MANIFEST file with a list of all the files to convert and concatenate, separated by newlines.
 
-See sinatra_saucer_client.rb for an example of a client that can use Sinatra Saucer. In Rails, use render_to_string to get the xhtml to pass to the client.
+There is a rudimentary form to submit a zip file, but it is expected the file will be sent by another application. This is to allow for the power of PDF creation with Flying Saucer without requiring your whole application to run in JRuby.
+
+So far the upload form works for creating a PDF. Coming soon will be documentation on how to use it from another app.
 
 Gems required: pbrant-flyingsaucer4r (0.5+), jruby (1.3+), rubyzip, and sinatra
 
